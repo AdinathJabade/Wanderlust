@@ -1,3 +1,4 @@
+
 # WanderLust
 
 WanderLust is a full-stack web application for listing and browsing rental properties from around the world. Built with Node.js, Express, MongoDB, and EJS, it provides a simple and interactive platform for users to view, create, edit, and delete property listings.
@@ -12,6 +13,7 @@ WanderLust is a full-stack web application for listing and browsing rental prope
 - **Delete Listings:** Remove properties from the database.
 - **MongoDB Integration:** Persistent data storage for all listings.
 - **EJS Templating:** Dynamic and responsive UI for all pages.
+- **Bootstrap Styling:** Modern, responsive forms and buttons using Bootstrap (add CDN links in your EJS files for styling).
 
 ---
 
@@ -35,7 +37,7 @@ wanderlust_part1/
 │   └── listings/
 │       ├── index.ejs     # All listings page
 │       ├── show.ejs      # Single listing details
-│       ├── new.ejs       # Create new listing
+│       ├── new.ejs       # Create new listing (uses Bootstrap classes)
 │       └── edit.ejs      # Edit listing
 ```
 
@@ -82,7 +84,7 @@ wanderlust_part1/
 
 - **Home Page:** Shows a welcome message.
 - **/listings:** View all property listings.
-- **/listings/new:** Add a new listing.
+- **/listings/new:** Add a new listing (form uses Bootstrap for styling).
 - **/listings/:id:** View details of a specific listing.
 - **/listings/:id/edit:** Edit a listing.
 - **Delete:** Use the delete button on a listing's detail page.
