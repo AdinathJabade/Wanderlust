@@ -237,7 +237,7 @@ const sampleListings = [
     title: "Industrial Loft",
     description: "Exposed brick and steel beams.",
     image:
-      "https://images.unsplash.com/photo-1752880051996-9b116757b970?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://plus.unsplash.com/premium_photo-1675745329659-29044cb6adbb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     price: 3100,
     location: "Chicago",
     contry: "USA",
