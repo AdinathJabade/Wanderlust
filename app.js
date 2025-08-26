@@ -6,8 +6,14 @@ const path = require("path");
 //PUT,DELETE are not directely so use method-override package
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 //Database connect function calling here
 dataBaseConnection()
@@ -30,13 +36,51 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
+};
+
 //Basic app testing for the app learning
 app.get("/", (req, res) => {
   res.send("Hello would!!!");
 });
 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  next();
+});
+
+// app.get("/demouser", async (req, res) => {
+//   let fakeUser = new User({
+//     email: "adi@gmail.com",
+//     username: "Adi_Jabade",
+//   });
+//   let registeredUser=await User.register(fakeUser, "12345a");
+//   res.send(registeredUser);
+// });
+
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 //This route will be testing of schema
 // app.get("/testListingSchema", async (req, res) => {
