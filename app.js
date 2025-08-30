@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-require("dotenv").config();
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 const path = require("path");
 //PUT,DELETE are not directely so use method-override package
 const methodOverride = require("method-override");
