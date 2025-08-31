@@ -29,11 +29,18 @@ module.exports.showListings = async (req, res, next) => {
 
 module.exports.createListing = async (req, res, next) => {
   try {
+    const geocoder = require('../utils/geocoder');
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
+    // Geocode location
+    const geoRes = await geocoder.geocode(newListing.location);
+    if (geoRes && geoRes.length > 0) {
+      newListing.latitude = geoRes[0].latitude;
+      newListing.longitude = geoRes[0].longitude;
+    }
     await newListing.save();
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
@@ -49,15 +56,30 @@ module.exports.editListing = async (req, res, next) => {
       req.flash("error", "Listing you requested for does not exist!");
       return res.redirect("/listings");
     }
-    res.render("./listings/edit.ejs", { listing });
+
+
+    let originalImageUrl=listing.image.url;
+    originalImageUrl=originalImageUrl.replace("/upload","/upload/w_250");
+    res.render("./listings/edit.ejs", { listing,originalImageUrl });
   } catch (err) {
     next(err);
   }
 };
 module.exports.updateListing = async (req, res, next) => {
   try {
+    const geocoder = require('../utils/geocoder');
     let { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+
+    // Geocode location if changed
+    if (req.body.listing.location) {
+      const geoRes = await geocoder.geocode(req.body.listing.location);
+      if (geoRes && geoRes.length > 0) {
+        listing.latitude = geoRes[0].latitude;
+        listing.longitude = geoRes[0].longitude;
+        await listing.save();
+      }
+    }
 
     if (typeof req.file !== "undefined") {
       let url = req.file.path;

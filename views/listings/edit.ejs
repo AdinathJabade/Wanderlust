@@ -30,13 +30,18 @@
       </div>
 
       <div class="mb-3">
-        <img src="<%=listing.image.url%>" alt="previous image" class="img-fluid" style="max-width: 300px; height: auto;">
+        Original Listing Image <br />
+        <img
+          src="<%=originalImageUrl%>"
+          alt="previous image"
+          class="img-fluid"
+          style="max-width: 300px; height: auto"
+        />
       </div>
 
       <div class="mb-3">
         <label for="image" class="form-label">Upload New Image</label>
         <input type="file" name="listing[image]" class="form-control" />
-        required
       </div>
 
       <div class="row">
@@ -77,8 +82,9 @@
         <div class="invalid-feedback">Please provide a location.</div>
       </div>
 
-      <br />
-      <button class="btn btn-dark mb-3 add-btn">Edit</button>
+      <div class="d-grid gap-2 mt-4 mb-3">
+        <button class="btn btn-danger fw-bold py-3 fs-4 shadow-sm w-100" style="letter-spacing:1px;">Edit</button>
+      </div>
     </form>
   </div>
 </div>
