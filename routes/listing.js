@@ -6,6 +6,18 @@ const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner } = require("../middleware.js");
 
 const listingController = require("../controllers/listings.js");
+// Search listings by contry or location
+router.get('/search', async (req, res) => {
+  const { q } = req.query;
+  // Find listings where contry or location matches the search text (case-insensitive)
+  const allListings = await Listing.find({
+    $or: [
+      { contry: { $regex: q, $options: 'i' } },
+      { location: { $regex: q, $options: 'i' } }
+    ]
+  });
+  res.render('listings/index', { allListings });
+});
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
