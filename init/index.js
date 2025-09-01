@@ -3,7 +3,7 @@ const Listing = require("../models/listing.js");
 const initData = require("./data.js");
 
 //database url
-const MONGO_URI = "mongodb://localhost:27017/wanderlust";
+const MONGO_URI = "mongodb://localhost:27017/tripster";
 
 //database connect function calling here
 dataBaseConnection()
@@ -23,7 +23,7 @@ const initDB = async () => {
   await Listing.deleteMany({});
   initData.data = initData.data.map((obj) => ({
     ...obj,
-    owner: "68ad768a98beb4921588750d",
+    owner: "68b4047969d944b690e0290d",
   }));
   await Listing.insertMany(initData.data);
   console.log("Data was initialized");

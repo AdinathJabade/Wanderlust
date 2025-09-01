@@ -1,3 +1,4 @@
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -49,10 +50,7 @@ const sessionOptions = {
   },
 };
 
-//Basic app testing for the app learning
-app.get("/", (req, res) => {
-  res.send("Hello would!!!");
-});
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -79,6 +77,12 @@ app.use((req, res, next) => {
 //   let registeredUser=await User.register(fakeUser, "12345a");
 //   res.send(registeredUser);
 // });
+
+
+// Landing page route
+app.get("/", (req, res) => {
+  res.render("landing", { currUser: req.user, hideSearch: true });
+});
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
