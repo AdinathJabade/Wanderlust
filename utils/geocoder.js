@@ -2,9 +2,9 @@ const NodeGeocoder = require('node-geocoder');
 
 
 const options = {
-  provider: 'openstreetmap',
+  provider: 'locationiq',
+  apiKey: process.env.LOCATIONIQ_API_KEY,
   httpAdapter: 'https',
-  userAgent: 'TripsterApp/1.0 (adujabade@gmail.com)',
 };
 
 const geocoder = NodeGeocoder(options);
