@@ -1,193 +1,121 @@
 # Tripster
 
-Tripster is a full-stack web application for listing and browsing rental properties from around the world. Built with Node.js, Express, MongoDB, and EJS, it provides a simple and interactive platform for users to view, create, edit, and delete property listings, leave reviews, and manage user accounts.
+> A lightweight rental property listing platform built with Node.js, Express, MongoDB, EJS, Cloudinary and LocationIQ.
+
+Live site: https://tripster-vioz.onrender.com
 
 ---
 
-## 🌍 Features
+## Why this repo
 
-- **View Listings:** Browse all available rental properties with details like title, description, price, location, and country.
-- **Create Listings:** Add new properties with images, price, and location.
-- **Edit Listings:** Update property details interactively.
-- **Delete Listings:** Remove properties from the database.
-- **Search Listings:** Search by country or location.
-- **User Authentication:** Sign up, log in, and log out securely using Passport.js.
-- **Review System:** Add and delete reviews for listings.
-- **MongoDB Integration:** Persistent data storage for all listings, users, and reviews.
-- **EJS Templating:** Dynamic and responsive UI for all pages.
-- **Bootstrap Styling:** Modern, responsive forms and buttons using Bootstrap.
-- **Cloudinary Integration:** Upload and store listing images in the cloud.
-- **Flash Messages:** User feedback for actions (success/error).
+Tripster lets users browse, post, edit, and remove rental listings with image uploads and geocoded locations. It includes account-signup/login (Passport), per-listing reviews, Cloudinary image storage, and LocationIQ geocoding.
+
+This README is intentionally focused: what you need to run, deploy (Render), and troubleshoot.
 
 ---
 
-## 📁 Folder Structure
+## Quick features
 
-```
-Tripster-Webapp/
-│
-├── app.js                # Main Express application
-├── package.json          # Project metadata and dependencies
-├── cloudConfig.js        # Cloudinary config for image uploads
-├── middleware.js         # Custom middleware functions
-├── schema.js             # Joi validation schemas
-│
-├── models/
-│   ├── listing.js        # Mongoose schema for listings
-│   ├── review.js         # Mongoose schema for reviews
-│   └── user.js           # Mongoose schema for users
-│
-├── controllers/
-│   ├── listings.js       # Listing CRUD logic
-│   ├── reviews.js        # Review logic
-│   └── users.js          # User authentication logic
-│
-├── routes/
-│   ├── listing.js        # Listing routes
-│   ├── review.js         # Review routes
-│   └── user.js           # User routes
-│
-├── init/
-│   ├── data.js           # Sample listings data
-│   └── index.js          # DB initialization script
-│
-├── utils/
-│   ├── ExpressError.js   # Custom error class
-│   └── geocoder.js       # Geocoding utility
-│
-├── public/
-│   ├── assets/           # Images and static assets
-│   ├── css/              # Stylesheets
-│   └── js/               # Client-side scripts
-│
-├── views/
-│   ├── error.ejs         # Error page
-│   ├── landing.ejs       # Landing page
-│   ├── includes/         # Navbar, footer, flash messages
-│   ├── layouts/          # Boilerplate layout
-│   ├── listings/         # Listing views (index, show, new, edit)
-│   └── users/            # User views (login, signup)
-│
-└── README.md             # Project documentation
+- Listings: create, read, update, delete (CRUD)
+- Image uploads via Cloudinary
+- Location geocoding via LocationIQ (node-geocoder)
+- User auth with Passport (local)
+- Reviews per listing
+- Server-side validation (Joi)
+
+---
+
+## Quick start (local)
+
+1. Clone and install
+
+```powershell
+git clone https://github.com/AdinathJabade/tripster.git
+cd Tripster-Webapp
+npm install
 ```
 
----
+2. Create `.env` (example)
 
-## 🏗️ Architecture & Main Components
+```env
+PORT=8080
+MONGO_URI=your_mongo_connection_string
+CLOUD_NAME=your_cloudinary_name
+CLOUD_API_KEY=your_cloudinary_api_key
+CLOUD_API_SECRET=your_cloudinary_api_secret
+SECRET=a_long_random_session_secret
+LOCATIONIQ_API_KEY=your_locationiq_key
+```
 
-- **app.js:** Entry point, sets up Express, middleware, session, Passport.js, routes, error handling, and server.
-- **cloudConfig.js:** Configures Cloudinary for image uploads using multer-storage-cloudinary.
-- **middleware.js:** Contains authentication and authorization logic (isLoggedIn, isOwner, isReviewOwner, saveRedirectUrl).
-- **controllers/:** Business logic for listings, reviews, and users.
-- **models/:** Mongoose schemas for listings, reviews, and users.
-- **routes/:** Express routers for listings, reviews, and users.
-- **init/:** Database initialization and sample data.
-- **views/:** EJS templates for all pages, using Bootstrap for styling.
-- **public/:** Static assets (CSS, JS, images).
+3. (Optional) seed sample data
 
----
+```powershell
+node ./init/index.js
+```
 
-## 🚀 Getting Started
+4. Run
 
-### Prerequisites
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
+```powershell
+node app.js
+```
 
-### Installation
-
-1. **Clone the repository:**
-   ```powershell
-   git clone https://github.com/AdinathJabade/tripster.git
-   cd Tripster-Webapp
-   ```
-2. **Install dependencies:**
-   ```powershell
-   npm install
-   ```
-3. **Set up environment variables:**
-   - Create a `.env` file in the root directory.
-   - Add your MongoDB URI and Cloudinary credentials:
-     ```env
-     MONGO_URI=mongodb://localhost:27017/tripster
-     PORT=8080
-     CLOUD_NAME=your_cloudinary_name
-     CLOUD_API_KEY=your_cloudinary_api_key
-     CLOUD_API_SECRET=your_cloudinary_api_secret
-     SECRET=your_session_secret
-     ```
-4. **Initialize the database with sample data (optional):**
-   ```powershell
-   node ./init/index.js
-   ```
-5. **Start the server:**
-   ```powershell
-   node app.js
-   ```
-6. **Visit the app:**
-   Open [http://localhost:8080](http://localhost:8080) in your browser.
+Open http://localhost:8080
 
 ---
 
-## 🖥️ Usage
+## Deploying to Render (short guide)
 
-- **Home Page:** Shows a welcome message.
-- **/listings:** View all property listings.
-- **/listings/new:** Add a new listing (form uses Bootstrap for styling).
-- **/listings/:id:** View details of a specific listing.
-- **/listings/:id/edit:** Edit a listing.
-- **Delete:** Use the delete button on a listing's detail page.
-- **Reviews:** Add/delete reviews for listings.
-- **User Auth:** Sign up, log in, log out.
+1. Create a new Web Service on Render and connect your Git repo.
+2. Set the build command to `npm install` and start command to `node app.js`.
+3. Add environment variables in Render's dashboard (same keys as local `.env`).
+4. Deploy. Your service will be served at `https://<your-service>.onrender.com` — your project is live at the URL above.
 
----
-
-## 📦 Dependencies
-
-- express
-- mongoose
-- dotenv
-- ejs
-- ejs-mate
-- method-override
-- connect-flash
-- connect-mongo
-- passport
-- passport-local
-- joi
-- multer
-- cloudinary
-- multer-storage-cloudinary
+Notes:
+- Make sure `MONGO_URI`, Cloudinary and `LOCATIONIQ_API_KEY` are set in Render.
+- If you use a free LocationIQ key, check request limits.
 
 ---
 
-## 👤 Author
+## Important files & where to look
 
-- [Adinath Jabade](https://github.com/AdinathJabade)
-
----
-
-## 📜 License
-
-This project is licensed under the ISC License.
-
----
-
-## 📝 Interactive Demo
-
-To try out the app locally, follow the setup steps above. You can add, edit, and delete listings, sign up/log in, and leave reviews interactively through the web interface.
+- `app.js` — express setup, session store, passport, route mounting, and error handling
+- `routes/` — `listing.js`, `review.js`, `user.js` (routes and validation)
+- `controllers/` — listing, review, and user controllers (business logic)
+- `models/` — Mongoose schemas for `Listing`, `Review`, `User`
+- `utils/geocoder.js` — node-geocoder configured for LocationIQ (reads `LOCATIONIQ_API_KEY`)
+- `cloudConfig.js` — Cloudinary & multer storage
+- `views/` — EJS templates (Bootstrap)
 
 ---
 
-## 💡 Contributing
+## Environment variables (quick reference)
 
-Contributions are welcome! Please open issues or submit pull requests for improvements, bug fixes, or new features.
-
----
-
-## 🙋‍♂️ Support
-
-For questions or support, open an issue on GitHub or contact the author.
+- `PORT` — app port (default 8080)
+- `MONGO_URI` — MongoDB connection string
+- `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET` — Cloudinary credentials
+- `SECRET` — session secret
+- `LOCATIONIQ_API_KEY` — LocationIQ access token
 
 ---
 
-## 🎉 Happy Exploring!
+## Troubleshooting
+
+- Geocoding blocked / errors: Ensure `LOCATIONIQ_API_KEY` is present. If you were using OpenStreetMap directly, make sure the user-agent header is set (Nominatim blocks anonymous/bulk traffic). This project uses LocationIQ by default.
+- Image upload errors: Verify Cloudinary creds in Render or `.env` and that `cloudConfig.js` reads from env vars.
+- Sessions not persisting: Confirm `MONGO_URI` is correct and `connect-mongo` store is connecting (app logs show connection errors).
+- Server errors: check Render build logs or local console output. The app renders `error.ejs` for unexpected errors.
+
+---
+
+## Helpful next steps I can do for you
+
+- Add a `/health` endpoint and a tiny `Procfile` for Render.
+- Add a short `deploy-to-render.md` with exact steps and environment variable examples.
+- Create an automated health-check script and basic tests.
+
+Tell me which of these you want and I'll implement it.
+
+---
+
+© Tripster — Maintained by Adinath Jabade
+
