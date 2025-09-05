@@ -1,140 +1,405 @@
 <% layout("/layouts/boilerplate", { currUser: currUser, hideSearch: true }) %>
 
 <style>
-  .hero-section {
+  .hero {
     position: relative;
-    width: 100%;
-    height: 60vh;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)),
+      url("/assets/tripster-bg.jpg") center/cover no-repeat;
+    color: #fff;
+    min-height: 62vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    overflow: hidden;
   }
-  .hero-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("/assets/tripster-bg.jpg") no-repeat center center/cover;
-    opacity: 0.7;
-    z-index: -1;
+  .hero .lead {
+    opacity: 0.95;
+  }
+  .search-box {
+    max-width: 760px;
+    margin: 1.2rem auto 0;
+  }
+  /* Make the search input clearly visible over the hero image */
+  .search-box .form-control {
+    background: #fff;
+    color: #222;
+  }
+  .input-group.shadow-sm {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .feature-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  .faq .accordion-button:focus {
+    box-shadow: none;
+  }
+  .testimonial {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  /* Responsive: stack search input and button on small screens */
+  @media (max-width: 576px) {
+    .hero {
+      min-height: 56vh;
+    }
+    .search-box {
+      padding: 0 1rem;
+    }
+    .search-box .input-group {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+      border-radius: 0.75rem;
+      padding: 0.35rem;
+      background: transparent;
+    }
+    .search-box .input-group .form-control {
+      border-radius: 0.75rem !important;
+      padding: 0.6rem 0.9rem;
+      width: 100%;
+    }
+    .search-box .input-group .btn {
+      width: 100%;
+      border-radius: 0.75rem !important;
+      padding: 0.6rem 1rem;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
   }
 </style>
 
-<!-- Hero Section -->
-<section
-  class="hero-section d-flex flex-column align-items-center justify-content-center text-center rounded-bottom-5"
->
-  <div class="container py-5">
-    <h1 class="display-4 fw-bold mb-3">Welcome to Tripster</h1>
-    <p class="lead mb-4">
-      Discover and book unique stays, experiences, and adventures around the
-      world.
+<!-- HERO -->
+<section class="hero">
+  <div class="container text-center py-5">
+    <h1 class="display-4 fw-bold">Find your next stay with Tripster</h1>
+    <p class="lead mb-3">
+      Unique stays, honest reviews and local experiences — all in one place.
     </p>
-    <a href="/listings" class="btn btn-lg btn-danger hero-btn px-5 py-3 fw-bold"
-      >Explore Listings</a
-    >
+
+    <!-- Search form -> GET /listings/search?q= -->
+    <form action="/listings/search" method="GET" class="search-box">
+      <div class="input-group shadow-sm rounded-pill overflow-hidden">
+        <input
+          name="q"
+          type="search"
+          class="form-control form-control-lg border-0"
+          placeholder="Search by city, country or location"
+          aria-label="Search"
+        />
+        <button class="btn btn-danger btn-lg px-4 fw-bold" type="submit">
+          Search
+        </button>
+      </div>
+    </form>
+
+    <div class="hero-buttons mt-4">
+      <a href="/listings" class="btn btn-outline-light btn-lg me-2"
+        >Browse Listings</a
+      >
+      <a href="/signup" class="btn btn-light btn-lg text-danger fw-bold"
+        >Create Account</a
+      >
+    </div>
   </div>
 </section>
 
-<!-- About Section -->
-<section class="about-section py-5 bg-light text-center">
+<!-- FEATURES -->
+<section class="py-5 text-center">
   <div class="container">
-    <h2 class="mb-3 fw-semibold">What is Tripster?</h2>
-    <p class="mb-4">
-      Tripster is your gateway to unique travel experiences. Find, book, and
-      review amazing places to stay and explore, all in one place.
-    </p>
-    <div class="row justify-content-center">
-      <div class="col-6 col-md-3 mb-3 px-5 py-3 bg-white rounded-5">
-        <i class="fa-solid fa-globe fa-2x mb-2 text-danger"></i>
-        <h5 class="fw-semibold">Global Listings</h5>
+    <div class="row g-3 justify-content-center">
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-4 feature-card bg-white">
+          <i class="fa-solid fa-globe fa-2x text-danger mb-2"></i>
+          <h5 class="fw-bold">Global Listings</h5>
+          <p class="mb-0 text-muted">
+            Properties from cities and towns around the world.
+          </p>
+        </div>
       </div>
-      <div class="col-6 col-md-3 mb-3 px-5 py-3 bg-white rounded-5">
-        <i class="fa-solid fa-star fa-2x mb-2 text-warning"></i>
-        <h5 class="fw-semibold">Trusted Reviews</h5>
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-4 feature-card bg-white">
+          <i class="fa-solid fa-camera-retro fa-2x text-primary mb-2"></i>
+          <h5 class="fw-bold">Rich Photos</h5>
+          <p class="mb-0 text-muted">
+            Upload and store images using Cloudinary.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-4 feature-card bg-white">
+          <i class="fa-solid fa-star fa-2x text-warning mb-2"></i>
+          <h5 class="fw-bold">Trusted Reviews</h5>
+          <p class="mb-0 text-muted">
+            Leave honest feedback for other travelers.
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How It Works Section -->
-<section class="how-section py-5 text-center">
-  <div class="container">
-    <h2 class="mb-4 fw-semibold">How It Works</h2>
-    <div class="row justify-content-center">
-      <div class="col-8 col-md-4 mb-4 text-center">
-        <div
-          class="d-flex flex-column align-items-center bg-light py-3 rounded-4"
-        >
-          <h5 class="fw-bold">Search</h5>
-          <i class="fa-solid fa-search fa-2x mb-2 text-danger fw-bold"></i>
-          <p>Find listings by location, contry, or category.</p>
-        </div>
-      </div>
-      <div class="col-8 col-md-4 mb-4">
-        <div
-          class="d-flex flex-column align-items-center bg-light py-3 rounded-4"
-        >
-          <h5 class="fw-bold">Review</h5>
-          <i class="fa-solid fa-pen-nib fa-2x mb-2 text-primary fw-bold"></i>
-          <p>Share your experience and help others choose.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Featured Listings removed per request -->
 
-<!-- Featured Listings Section (placeholder) -->
-<section class="featured-section py-5 bg-light text-center">
-  <div class="container">
-    <h2 class="mb-4 fw-semibold">Featured Listings</h2>
-    <p class="mb-0">
-      Check out some of our top-rated stays and trending destinations!
-    </p>
-    <!-- You can add a carousel or grid of featured listings here -->
-  </div>
-</section>
-
-<!-- Testimonials Section (placeholder) -->
-<section class="testimonials-section py-5 text-center">
+<!-- TESTIMONIALS -->
+<style>
+  .testimonial {
+    text-align: left;
+  }
+  .testimonial .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    background: #6c757d;
+    margin-right: 0.75rem;
+    flex: 0 0 64px;
+  }
+  .testimonial .meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .testimonial p {
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 576px) {
+    .testimonial .avatar {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+    }
+  }
+</style>
+<section class="py-5 text-center">
   <div class="container">
     <h2 class="mb-4 fw-semibold">What Our Users Say</h2>
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-4 mb-4 px-5 py-3 bg-light rounded-3">
-        <blockquote class="blockquote">
-          “Easy to use and so many unique places.”
-        </blockquote>
-        <footer class="blockquote-footer">Rahul, Goa</footer>
+    <div class="row g-3 justify-content-center">
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-3 testimonial bg-white">
+          <div class="meta">
+            <div class="avatar" title="Rahul" style="background: black">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+            </div>
+            <div>
+              <strong>Rahul</strong>
+              <div class="small text-muted">Goa</div>
+            </div>
+          </div>
+          <p class="mb-1">“Easy to use and so many unique places.”</p>
+        </div>
       </div>
-      <div class="col-12 col-md-4 mb-4 px-5 py-3 bg-light rounded-3">
-        <blockquote class="blockquote">
-          “Tripster made my vacation unforgettable!”
-        </blockquote>
-        <footer class="blockquote-footer">Aditi, Mumbai</footer>
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-3 testimonial bg-white">
+          <div class="meta">
+            <div class="avatar" title="Aditi" style="background: black">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+            </div>
+            <div>
+              <strong>Aditi</strong>
+              <div class="small text-muted">Mumbai</div>
+            </div>
+          </div>
+          <p class="mb-1">“Tripster made my vacation unforgettable!”</p>
+        </div>
       </div>
-      <div class="col-12 col-md-4 mb-4 px-5 py-3 bg-light rounded-3">
-        <blockquote class="blockquote">
-          “I found the perfect stay for my family.”
-        </blockquote>
-        <footer class="blockquote-footer">Priya, Delhi</footer>
+      <div class="col-12 col-md-4">
+        <div class="p-4 rounded-3 testimonial bg-white">
+          <div class="meta">
+            <div class="avatar" title="Priya" style="background: black">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+            </div>
+            <div>
+              <strong>Priya</strong>
+              <div class="small text-muted">Delhi</div>
+            </div>
+          </div>
+          <p class="mb-1">“I found the perfect stay for my family.”</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Call to Action Section -->
-<section class="cta-section py-5 bg-light rounded text-black text-center">
+<!-- NEWSLETTER -->
+<style>
+  .newsletter-section {
+    position: relative;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.35)),
+      url("/assets/newsletter-bg.jpg") center/cover no-repeat;
+    color: #fff;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+  }
+  .newsletter-section .container {
+    position: relative;
+    z-index: 2;
+  }
+  .newsletter-section .form-control {
+    border-radius: 2rem 0 0 2rem;
+  }
+  .newsletter-section .btn {
+    border-radius: 0 2rem 2rem 0;
+  }
+  @media (max-width: 576px) {
+    .newsletter-section .input-group {
+      /* display: flex; */
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+      border-radius: 0.75rem;
+      padding: 0.35rem;
+      background: transparent;
+    }
+    .newsletter-section .form-control,
+    .newsletter-section .btn {
+      /* border-radius: 2rem !important;
+      margin-bottom: 0.5rem; */
+      text-align: center;
+      border-radius: 0.75rem !important;
+      padding: 0.6rem 0.9rem;
+      width: 100%;
+    }
+  }
+</style>
+<section class="newsletter-section text-center py-5">
   <div class="container">
-    <h2 class="mb-3 fw-bold">Ready to start your next adventure?</h2>
-    <a
-      href="/signup"
-      class="btn btn-light btn-lg fw-bold bg-danger text-white px-5 py-3 rounded-5"
-      >Sign Up Now</a
+    <h3 class="mb-3 fw-bold">Stay in the loop</h3>
+    <p class="mb-3">Sign up for hand-picked listings and travel tips.</p>
+    <form
+      class="d-flex justify-content-center align-items-center"
+      action="#"
+      method="POST"
     >
+      <div class="input-group w-50">
+        <input
+          type="email"
+          class="form-control fw-bold"
+          placeholder="Your email"
+          aria-label="Email"
+          required
+        />
+        <button class="btn btn-danger fw-bold">Subscribe</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5 faq">
+  <div class="container">
+    <h2 class="mb-4 text-center fw-semibold">Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            How do I create a listing?
+          </button>
+        </h2>
+        <div
+          id="collapseOne"
+          class="accordion-collapse collapse show"
+          aria-labelledby="faqOne"
+          data-bs-parent="#faqAccordion"
+        >
+          <div class="accordion-body">
+            Sign up or log in, then visit
+            <a class="fw-bold" href="/listings/new">Add New Listing</a> and
+            complete the form with details, images and price.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqTwo">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            Are listings moderated?
+          </button>
+        </h2>
+        <div
+          id="collapseTwo"
+          class="accordion-collapse collapse"
+          aria-labelledby="faqTwo"
+          data-bs-parent="#faqAccordion"
+        >
+          <div class="accordion-body">
+            Listings are user-generated. Please follow community guidelines.
+            Admin moderation can be added later for flagged content.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faqThree">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            How are images stored?
+          </button>
+        </h2>
+        <div
+          id="collapseThree"
+          class="accordion-collapse collapse"
+          aria-labelledby="faqThree"
+          data-bs-parent="#faqAccordion"
+        >
+          <div class="accordion-body">
+            Images are uploaded to Cloudinary. Make sure Cloudinary env
+            variables are set for uploads to work.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<style>
+  @media (max-width: 576px) {
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+</style>
+<section class="py-5 text-center">
+  <div class="cta-buttons container">
+    <h2 class="mb-3 fw-bold">Ready to list or discover your next stay?</h2>
+    <a href="/listings" class="btn btn-danger btn-lg me-2 fw-bold"
+      >Explore Listings</a
+    >
+    <a href="/signup" class="btn btn-outline-danger btn-lg">Get Started</a>
   </div>
 </section>

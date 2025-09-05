@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <div class="row mb-3">
-  <div class="col-10 offset-1 mt-3">
-  <h3 class="text-center"><%=listing.title%></h3>
+  <div class="col-10 offset-1 mt-3 mb-3">
+  <h3 class="text-center fw-bold"><%=listing.title%></h3>
   </div>
   <div class="card col-10 offset-1 show-card listing-card">
     <img
@@ -40,7 +40,7 @@
     <hr />
     <!-- Map Section -->
     <div class="mt-4 mb-4">
-      <h4>Location Map</h4>
+      <h4 class="fw-bold">Location Map</h4>
       <div class="map-responsive">
         <div id="map"></div>
       </div>
@@ -77,7 +77,7 @@
       </style>
     </div>
     <% if(currUser){%>
-    <h4>Leave a Review</h4>
+    <h4 class="fw-bold">Leave a Review</h4>
     <form
       method="POST"
       action="/listings/<%=listing._id%>/reviews"
@@ -179,13 +179,13 @@
         ></textarea>
         <div class="invalid-feedback">Please add some comments for review</div>
       </div>
-      <button class="btn btn-outline-dark mt-3">Submit</button>
+      <button class="btn btn-outline-dark mt-3 fw-bold">Submit</button>
     </form>
      <%}%>
  
    
 
-    <p class="mt-3 mb-3"><b>All Reviews</b></p>
+    <p class="mt-3 mb-3 fw-bold">All Reviews</p>
     <div class="row g-3">
       <%for(review of listing.reviews){%>
       <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
@@ -195,11 +195,11 @@
             <p class="starability-result card-text mb-2" data-rating="<%=review.rating%>"></p>
             <p class="card-text"><%=review.comment%></p>
             <form
-              class="mt-2"
+              class=""
               method="POST"
               action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE"
             >
-              <button class="btn btn-sm btn-dark w-100">Delete</button>
+              <button class="btn btn-sm btn-dark w-100 fw-bold">Delete</button>
             </form>
           </div>
         </div>
